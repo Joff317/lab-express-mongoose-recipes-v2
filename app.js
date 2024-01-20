@@ -1,14 +1,22 @@
+// 0. Give access to node to your environnement variables
+require("dotenv").config()
+
+// 1. Connexion to BDD
+require("./config/db");
+
+// 2. We need express, morgan
 const express = require("express");
 const logger = require("morgan");
+
 
 const app = express();
 
 // MIDDLEWARE
 app.use(logger("dev"));
-app.use(express.static("public"));
 app.use(express.json());
+app.use(express.urlencoded({ extends: true }));
 
-
+app.use("/api", require("./routes/index.routes"))
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
 
@@ -16,9 +24,9 @@ app.use(express.json());
 
 // ROUTES
 //  GET  / route - This is just an example route
-app.get('/', (req, res) => {
-    res.send("<h1>LAB | Express Mongoose Recipes</h1>");
-});
+// app.get('/', (req, res) => {
+//     res.send("<h1>LAB | Express Mongoose Recipes</h1>");
+// });
 
 
 //  Iteration 3 - Create a Recipe route
@@ -43,7 +51,7 @@ app.get('/', (req, res) => {
 
 
 // Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
+app.listen(process.env.PORT, () => console.log('My first app listening on port 3000!'));
 
 
 
